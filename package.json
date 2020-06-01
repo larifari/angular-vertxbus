@@ -1,6 +1,6 @@
 {
   "name": "angular-vertxbus",
-  "version": "6.4.1",
+  "version": "7.0.0",
   "description": "AngularJS facade and service acting as a Vert.x SockJS client",
   "main": "dist/angular-vertxbus.js",
   "keywords": [
@@ -34,6 +34,7 @@
     "compile-distmin": "BUILD_MINIFIED=1 webpack",
     "compile": "grunt clean && npm run -s compile-dist && npm run -s compile-distmin && grunt build-post",
     "build": "npm run -s check-env && npm run -s test && npm run -s compile",
+    "onlybuild": "npm run -s check-env && npm run -s compile",
     "release": "npm run -s clean && npm run -s build && grunt release",
     "upload-github-release": "node build_tools/upload-github-release.js",
     "docs": "grunt docs"

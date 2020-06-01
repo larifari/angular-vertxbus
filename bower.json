@@ -1,8 +1,8 @@
 {
-  "author": "Jan Philipp",
+  "author": "Jan Philipp & Larissa Naber",
   "name": "angular-vertxbus",
   "description": "AngularJS facade and service acting as a Vert.x SockJS client",
-  "version": "6.4.0",
+  "version": "7.0.0",
   "homepage": "http://github.com/knalli/angular-vertxbus",
   "main": "./dist/angular-vertxbus.js",
   "keywords": [
@@ -29,7 +29,7 @@
   "dependencies": {
     "angular": ">=1.2 <1.7",
     "sockjs-client": "~1.1.0",
-    "vertx3-eventbus-client": "~3.5.0"
+    "vertx3-eventbus-client": "^3.5.0"
   },
   "devDependencies": {
     "angular": "~1.6.2",

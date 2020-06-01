@@ -28,6 +28,7 @@ export default class SimpleMap {
     if (idx > -1) {
       return this.values[idx];
     }
+    return undefined;
   }
 
   // Returns true if the key exists.
@@ -46,8 +47,8 @@ export default class SimpleMap {
   remove(key) {
     let idx = this._indexForKey(key);
     if (idx > -1) {
-      this.keys[idx] = undefined;
-      this.values[idx] = undefined;
+      this.keys.splice(idx);
+      this.values.splice(idx);
     }
 
   }
@@ -66,6 +67,7 @@ export default class SimpleMap {
         return i;
       }
     }
+    // console.log('[Vert.x EB SimpleMap] key not found: ', key);
     return -1;
   }
 

@@ -209,15 +209,16 @@ export default class EventBusDelegate extends BaseDelegate {
     if (!angular.isFunction(callback)) {
       return;
     }
-    if (this.options.debugEnabled) {
-      this.$log.debug(`[Vert.x EB Service] Register handler for ${address}`);
-    }
+
     var callbackWrapper = (err, {body}, replyTo) => {
       callback(body, replyTo);
       this.$rootScope.$digest();
     };
     callbackWrapper.displayName = `${moduleName}.service.delegate.live.registerHandler.callbackWrapper`;
     this.callbackMap.put(callback, callbackWrapper);
+    if (this.options.debugEnabled) {
+      this.$log.debug(`[Vert.x EB Service] Register handler for ${address}, current nr of listeners: `, this.callbackMap.keys.length);
+    }
     return this.eventBus.registerHandler(address, headers, callbackWrapper);
   }
 
@@ -229,11 +230,11 @@ export default class EventBusDelegate extends BaseDelegate {
     if (!angular.isFunction(callback)) {
       return;
     }
-    if (this.options.debugEnabled) {
-      this.$log.debug(`[Vert.x EB Service] Unregister handler for ${address}`);
-    }
     this.eventBus.unregisterHandler(address, headers, this.callbackMap.get(callback));
     this.callbackMap.remove(callback);
+    if (this.options.debugEnabled) {
+      this.$log.debug(`[Vert.x EB Service] Unregister handler for ${address}, current nr of listeners: `, this.callbackMap.keys.length);
+    }
   }
 
   send(address, message, headers, timeout = 10000, expectReply = true) {

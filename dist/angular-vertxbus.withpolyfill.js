@@ -7573,9 +7573,9 @@ module.exports = _dereq_(23);
 }).call(this,typeof global !== "undefined" ? global : typeof self !== "undefined" ? self : typeof window !== "undefined" ? window : {})
 },{}]},{},[1]);
 
-/*! angular-vertxbus - v6.4.1 - 2018-02-23
+/*! angular-vertxbus - v7.0.0 - 2020-06-01
  * https://github.com/knalli/angular-vertxbus
- * Copyright (c) 2018 Jan Philipp
+ * Copyright (c) 2020 Jan Philipp
  * @license MIT */
 (function webpackUniversalModuleDefinition(root, factory) {
 	if(typeof exports === 'object' && typeof module === 'object')
@@ -10964,9 +10964,7 @@ var EventBusDelegate = function (_BaseDelegate) {
       if (!angular.isFunction(callback)) {
         return;
       }
-      if (this.options.debugEnabled) {
-        this.$log.debug('[Vert.x EB Service] Register handler for ' + address);
-      }
+
       var callbackWrapper = function callbackWrapper(err, _ref2, replyTo) {
         var body = _ref2.body;
 
@@ -10975,6 +10973,9 @@ var EventBusDelegate = function (_BaseDelegate) {
       };
       callbackWrapper.displayName = _config.moduleName + '.service.delegate.live.registerHandler.callbackWrapper';
       this.callbackMap.put(callback, callbackWrapper);
+      if (this.options.debugEnabled) {
+        this.$log.debug('[Vert.x EB Service] Register handler for ' + address + ', current nr of listeners: ', this.callbackMap.keys.length);
+      }
       return this.eventBus.registerHandler(address, headers, callbackWrapper);
     }
   }, {
@@ -10987,11 +10988,11 @@ var EventBusDelegate = function (_BaseDelegate) {
       if (!angular.isFunction(callback)) {
         return;
       }
-      if (this.options.debugEnabled) {
-        this.$log.debug('[Vert.x EB Service] Unregister handler for ' + address);
-      }
       this.eventBus.unregisterHandler(address, headers, this.callbackMap.get(callback));
       this.callbackMap.remove(callback);
+      if (this.options.debugEnabled) {
+        this.$log.debug('[Vert.x EB Service] Unregister handler for ' + address + ', current nr of listeners: ', this.callbackMap.keys.length);
+      }
     }
   }, {
     key: 'send',
@@ -11404,6 +11405,7 @@ var SimpleMap = function () {
       if (idx > -1) {
         return this.values[idx];
       }
+      return undefined;
     }
 
     // Returns true if the key exists.
@@ -11431,8 +11433,8 @@ var SimpleMap = function () {
     value: function remove(key) {
       var idx = this._indexForKey(key);
       if (idx > -1) {
-        this.keys[idx] = undefined;
-        this.values[idx] = undefined;
+        this.keys.splice(idx);
+        this.values.splice(idx);
       }
     }
 
@@ -11456,6 +11458,7 @@ var SimpleMap = function () {
           return i;
         }
       }
+      // console.log('[Vert.x EB SimpleMap] key not found: ', key);
       return -1;
     }
   }, {
